@@ -28,7 +28,7 @@ API.interceptors.response.use(
     }
     
     const errorData = error.response?.data;
-    const errorMessage = (typeof errorData === "string" ? errorData : errorData?.message) || "Network error";
+    const errorMessage = (typeof errorData === "string" ? errorData : (errorData?.message || errorData?.error)) || "Network error";
     
     return Promise.reject({ message: errorMessage });
   },

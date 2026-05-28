@@ -45,8 +45,9 @@ const interviewSchema = new mongoose.Schema({
   },
 
   // Questions and answers
-  questions: [String],
+  questions: [mongoose.Schema.Types.Mixed],
   answers: [answerSchema],
+  correctAnswers: [Number], // For MCQ sessions: stores the index of the correct option
 
   // Resume-based interview extras
   resumeData: {

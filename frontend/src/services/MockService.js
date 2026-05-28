@@ -1,5 +1,216 @@
 // MockService.js - Handles client-side data for MCQ and User Tracking
 
+// --- REACTION QUESTIONS ---
+const REACT_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `react_${i + 1}`,
+  question: `React Question ${i + 1}: What is a core concept in React?`,
+  options: [
+    { text: "Two-way data binding" },
+    { text: "Virtual DOM" },
+    { text: "Direct DOM manipulation" },
+    { text: "Server-side rendering only" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "React uses a Virtual DOM to optimize rendering performance."
+}));
+
+// --- NODE.JS QUESTIONS ---
+const NODE_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `node_${i + 1}`,
+  question: `Node.js Question ${i + 1}: Which of the following is true about Node.js?`,
+  options: [
+    { text: "It is multi-threaded" },
+    { text: "It is built on V8" },
+    { text: "It is a frontend library" },
+    { text: "It uses blocking I/O" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "Node.js is a runtime built on Chrome's V8 JavaScript engine."
+}));
+
+// --- MONGODB QUESTIONS ---
+const MONGODB_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `mongo_${i + 1}`,
+  question: `MongoDB Question ${i + 1}: What type of database is MongoDB?`,
+  options: [
+    { text: "Relational" },
+    { text: "NoSQL" },
+    { text: "Graph" },
+    { text: "Key-Value" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "MongoDB is a popular NoSQL document-oriented database."
+}));
+
+// --- TYPESCRIPT QUESTIONS ---
+const TYPESCRIPT_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `ts_${i + 1}`,
+  question: `TypeScript Question ${i + 1}: What does TypeScript add to JavaScript?`,
+  options: [
+    { text: "Static typing" },
+    { text: "Runtime type checking" },
+    { text: "Multi-threading" },
+    { text: "A virtual machine" }
+  ],
+  correctOptionIndex: 0,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "TypeScript is a superset of JavaScript that adds static types."
+}));
+
+// --- JAVASCRIPT QUESTIONS ---
+const JS_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `js_${i + 1}`,
+  question: `JS Question ${i + 1}: Which keyword is used to declare a variable?`,
+  options: [
+    { text: "variable" },
+    { text: "let" },
+    { text: "v" },
+    { text: "dec" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "let is a keyword used to declare block-scoped variables."
+}));
+
+// --- CSS3 QUESTIONS ---
+const CSS_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `css_${i + 1}`,
+  question: `CSS Question ${i + 1}: Which property changes text color?`,
+  options: [
+    { text: "font-color" },
+    { text: "color" },
+    { text: "text-style" },
+    { text: "background-color" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "The 'color' property is used to set the color of text."
+}));
+
+// --- NEXT.JS QUESTIONS ---
+const NEXTJS_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `next_${i + 1}`,
+  question: `Next.js Question ${i + 1}: What is a feature of Next.js?`,
+  options: [
+    { text: "Server-side rendering" },
+    { text: "No routing" },
+    { text: "Only client-side" },
+    { text: "Requires SQL" }
+  ],
+  correctOptionIndex: 0,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "Next.js provides server-side rendering and static site generation."
+}));
+
+// --- PYTHON QUESTIONS ---
+const PYTHON_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `py_${i + 1}`,
+  question: `Python Question ${i + 1}: How do you start a comment?`,
+  options: [
+    { text: "//" },
+    { text: "#" },
+    { text: "/*" },
+    { text: "<!--" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "In Python, comments start with the # character."
+}));
+
+// --- JAVA QUESTIONS ---
+const JAVA_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `java_${i + 1}`,
+  question: `Java Question ${i + 1}: Which is a Java keyword?`,
+  options: [
+    { text: "class" },
+    { text: "function" },
+    { text: "let" },
+    { text: "var" }
+  ],
+  correctOptionIndex: 0,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "class is a reserved keyword in Java used to declare a class."
+}));
+
+// --- DOCKER QUESTIONS ---
+const DOCKER_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `docker_${i + 1}`,
+  question: `Docker Question ${i + 1}: What does Docker use to build images?`,
+  options: [
+    { text: "Makefile" },
+    { text: "Dockerfile" },
+    { text: "JSON" },
+    { text: "XML" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "Docker uses a Dockerfile to define the image build process."
+}));
+
+// --- KUBERNETES QUESTIONS ---
+const K8S_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `k8s_${i + 1}`,
+  question: `K8s Question ${i + 1}: What is the basic unit of deployment?`,
+  options: [
+    { text: "Node" },
+    { text: "Pod" },
+    { text: "Cluster" },
+    { text: "Container" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "A Pod is the smallest deployable unit in Kubernetes."
+}));
+
+// --- GRAPHQL QUESTIONS ---
+const GRAPHQL_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `gql_${i + 1}`,
+  question: `GraphQL Question ${i + 1}: What does GraphQL allow you to do?`,
+  options: [
+    { text: "Query specific data" },
+    { text: "Run SQL" },
+    { text: "Only REST" },
+    { text: "Create UIs" }
+  ],
+  correctOptionIndex: 0,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "GraphQL allows clients to request exactly the data they need."
+}));
+
+// --- REST API QUESTIONS ---
+const REST_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `rest_${i + 1}`,
+  question: `REST Question ${i + 1}: Which HTTP method is used to create a resource?`,
+  options: [
+    { text: "GET" },
+    { text: "POST" },
+    { text: "DELETE" },
+    { text: "PUT" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "POST is typically used to create a new resource."
+}));
+
+// --- POSTGRESQL QUESTIONS ---
+const POSTGRES_QUESTIONS = Array.from({ length: 10 }, (_, i) => ({
+  _id: `pg_${i + 1}`,
+  question: `Postgres Question ${i + 1}: What type of database is PostgreSQL?`,
+  options: [
+    { text: "NoSQL" },
+    { text: "Relational" },
+    { text: "Document" },
+    { text: "Key-Value" }
+  ],
+  correctOptionIndex: 1,
+  difficulty: i < 3 ? "Beginner" : i < 7 ? "Intermediate" : "Advanced",
+  explanation: "PostgreSQL is a powerful, open-source relational database."
+}));
+
+// --- ML & SQL QUESTIONS (Existing) ---
 const ML_QUESTIONS = [
   {
     _id: "ml_1",
@@ -280,6 +491,24 @@ export const mockMCQ = {
       return SQL_QUESTIONS;
     }
     
+    // Additional mappings
+    if (techLower.includes('react')) return REACT_QUESTIONS;
+    if (techLower.includes('node')) return NODE_QUESTIONS;
+    if (techLower.includes('mongo')) return MONGODB_QUESTIONS;
+    if (techLower.includes('type')) return TYPESCRIPT_QUESTIONS;
+    if (techLower.includes('java')) {
+      if (techLower.includes('script')) return JS_QUESTIONS;
+      return JAVA_QUESTIONS;
+    }
+    if (techLower.includes('css')) return CSS_QUESTIONS;
+    if (techLower.includes('next')) return NEXTJS_QUESTIONS;
+    if (techLower.includes('python')) return PYTHON_QUESTIONS;
+    if (techLower.includes('docker')) return DOCKER_QUESTIONS;
+    if (techLower.includes('kube')) return K8S_QUESTIONS;
+    if (techLower.includes('graph')) return GRAPHQL_QUESTIONS;
+    if (techLower.includes('rest')) return REST_QUESTIONS;
+    if (techLower.includes('postgres')) return POSTGRES_QUESTIONS;
+    
     return null;
   }
 };
@@ -436,4 +665,3 @@ export const mockLearningPaths = [
     ]
   }
 ];
-

@@ -1,5 +1,6 @@
 const Interview = require('../models/Interview');
 const User = require('../models/User');
+const Question = require('../models/Question');
 const {
   generateInterviewQuestions,
   generateMockQuestions,
@@ -53,13 +54,48 @@ const startInterview = async (req, res, next) => {
     else if (experienceLevel.includes('senior')) experienceLevel = 'senior';
     else if (experienceLevel.includes('expert') || experienceLevel.includes('lead') || experienceLevel.includes('staff')) experienceLevel = 'expert';
 
-    // Generate 10 questions with AI
-    const generatedQuestions = await generateInterviewQuestions({
-      technology,
-      experienceLevel
-    });
+    let questionsData = [];
+    let correctAnswers = [];
 
-    const questionTexts = generatedQuestions.map(q => q.question);
+    if (type === 'mcq-session') {
+      const filter = { 
+        technology: { $regex: new RegExp(`^${technology}$`, 'i') }, 
+        isActive: true 
+      };
+      // Map experience level to difficulty
+      if (experienceLevel) filter.difficulty = experienceLevel;
+
+      const rawQuestions = await Question.aggregate([
+        { $match: filter },
+        { $sample: { size: 10 } }
+      ]);
+
+      if (rawQuestions.length === 0) {
+        delete filter.difficulty;
+        const fallbackQuestions = await Question.aggregate([
+          { $match: filter },
+          { $sample: { size: 10 } }
+        ]);
+        rawQuestions.push(...fallbackQuestions);
+      }
+
+      questionsData = rawQuestions.map(q => ({
+        id: q._id,
+        question: q.question,
+        options: q.options.map(o => ({ text: o.text })),
+        type: 'mcq'
+      }));
+      correctAnswers = rawQuestions.map(q => q.options.findIndex(o => o.isCorrect));
+    } else {
+      // Generate 10 questions with AI
+      const generatedQuestions = await generateInterviewQuestions({
+        technology,
+        experienceLevel
+      });
+      questionsData = generatedQuestions;
+    }
+
+    const questionTexts = questionsData.map(q => typeof q === 'string' ? q : q.question);
 
     const interview = await Interview.create({
       user: req.user.id,
@@ -67,11 +103,12 @@ const startInterview = async (req, res, next) => {
       technology,
       experienceLevel: experienceLevel || req.user.experienceLevel,
       mode: mode || 'text',
-      questions: questionTexts,
-      analytics: { totalQuestions: 10 },
+      questions: questionsData,
+      correctAnswers,
+      analytics: { totalQuestions: questionsData.length },
       conversationHistory: [{
         role: 'assistant',
-        content: `Hello! I'm Alex, your AI interviewer today. I'll be asking you 10 questions focused on ${technology}. Let's begin!\n\nQuestion 1: ${questionTexts[0]}`
+        content: `Hello! I'm Alex, your AI interviewer today. I'll be asking you ${questionsData.length} questions focused on ${technology}. Let's begin!\n\nQuestion 1: ${questionTexts[0]}`
       }]
     });
 
@@ -79,7 +116,7 @@ const startInterview = async (req, res, next) => {
       success: true,
       message: 'Interview session started!',
       interviewId: interview._id,
-      questions: generatedQuestions,
+      questions: questionsData,
       firstMessage: interview.conversationHistory[0].content
     });
   } catch (error) {
@@ -104,15 +141,22 @@ const submitInterviewAnswer = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Interview is not active.' });
     }
 
-    const currentQuestion = interview.questions[questionIndex];
+    const currentQuestionData = interview.questions[questionIndex];
+    const currentQuestionText = typeof currentQuestionData === 'string' 
+      ? currentQuestionData 
+      : (currentQuestionData.question || 'Next Question');
+
     const isLast = questionIndex >= interview.questions.length - 1;
-    const nextQuestion = isLast ? null : interview.questions[questionIndex + 1];
+    const nextQuestionData = isLast ? null : interview.questions[questionIndex + 1];
+    const nextQuestionText = nextQuestionData 
+      ? (typeof nextQuestionData === 'string' ? nextQuestionData : nextQuestionData.question)
+      : null;
 
     // Analyze answer with AI (async — don't block the response)
     let analysis;
     try {
       analysis = await analyzeAnswer({
-        question: currentQuestion,
+        question: currentQuestionText,
         answer,
         technology: interview.technology,
         experienceLevel: interview.experienceLevel,
@@ -134,7 +178,7 @@ const submitInterviewAnswer = async (req, res, next) => {
         conversationHistory: interview.conversationHistory.map(m => ({
           role: m.role, content: m.content
         })),
-        currentQuestion: nextQuestion,
+        currentQuestion: nextQuestionText,
         userAnswer: answer,
         questionNumber: questionIndex + 1,
         totalQuestions: interview.questions.length
@@ -142,13 +186,13 @@ const submitInterviewAnswer = async (req, res, next) => {
     } catch (err) {
       aiResponse = isLast
         ? 'Great effort! Your interview is complete. Generating your feedback report now...'
-        : `Thank you for that answer. Let's move on. Question ${questionIndex + 2}: ${nextQuestion}`;
+        : `Thank you for that answer. Let's move on. Question ${questionIndex + 2}: ${nextQuestionText}`;
     }
 
     // Record answer
     interview.answers.push({
       questionNumber: questionIndex + 1,
-      question: currentQuestion,
+      question: currentQuestionText,
       userAnswer: answer,
       aiAnalysis: analysis,
       timeSpent,
@@ -186,7 +230,7 @@ const submitInterviewAnswer = async (req, res, next) => {
       },
       nextQuestion: isLast ? null : {
         index: questionIndex + 1,
-        question: nextQuestion
+        question: nextQuestionText
       }
     });
   } catch (error) {

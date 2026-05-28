@@ -8,7 +8,9 @@ const getQuestions = async (req, res, next) => {
     const { technology, difficulty, type, limit = 10, page = 1, shuffle = false } = req.query;
 
     const filter = { isActive: true };
-    if (technology) filter.technology = technology;
+    if (technology) {
+      filter.technology = { $regex: new RegExp(`^${technology}$`, 'i') };
+    }
     if (difficulty) filter.difficulty = difficulty;
     if (type) filter.type = type;
 
@@ -59,10 +61,19 @@ const getTechnologies = async (req, res, next) => {
           difficulties: { $addToSet: '$difficulty' }
         }
       },
-      { $sort: { count: -1 } }
+      {
+        $project: {
+          _id: 1,
+          technology: '$_id',
+          count: 1,
+          category: 1,
+          difficulties: 1
+        }
+      },
+      { $sort: { count: -1, technology: 1 } }
     ]);
 
-    res.json({ success: true, data: stats });
+    res.json({ success: true, count: stats.length, data: stats });
   } catch (error) {
     next(error);
   }
@@ -159,7 +170,10 @@ const getQuiz = async (req, res, next) => {
     const { technology } = req.params;
     const { count = 10, difficulty } = req.query;
 
-    const filter = { technology, isActive: true };
+    const filter = { 
+      technology: { $regex: new RegExp(`^${technology}$`, 'i') }, 
+      isActive: true 
+    };
     if (difficulty) filter.difficulty = difficulty;
 
     const questions = await Question.aggregate([
@@ -167,7 +181,9 @@ const getQuiz = async (req, res, next) => {
       { $sample: { size: parseInt(count) } },
       {
         $project: {
+          _id: 1, // Explicitly include _id
           question: 1, technology: 1, difficulty: 1, type: 1,
+          category: 1,
           codeSnippet: 1, timeLimit: 1, points: 1, tags: 1,
           options: { $map: { input: '$options', as: 'opt', in: { text: '$$opt.text' } } }
         }

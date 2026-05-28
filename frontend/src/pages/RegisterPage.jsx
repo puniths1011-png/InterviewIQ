@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import './AuthPages.css';
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', experienceLevel: 'junior' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', experienceLevel: 'Junior' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
@@ -115,10 +115,10 @@ export default function RegisterPage() {
                 value={form.experienceLevel} 
                 onChange={e => setForm(f => ({ ...f, experienceLevel: e.target.value }))}
               >
-                <option value="junior">Junior (0–2 years)</option>
-                <option value="mid">Mid-level (2–5 years)</option>
-                <option value="senior">Senior (5+ years)</option>
-                <option value="expert">Expert / Staff</option>
+                <option value="Junior">Junior (0–2 years)</option>
+                <option value="Mid-Level">Mid-Level (2–5 years)</option>
+                <option value="Senior">Senior (5+ years)</option>
+                <option value="Expert">Expert / Staff</option>
               </select>
             </div>
             <button className="btn btn-primary auth-button" disabled={loading}>

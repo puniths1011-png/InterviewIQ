@@ -40,9 +40,11 @@ export default function MCQQuizPage() {
 
   const loadQuiz = async () => {
     setLoading(true);
+    console.log("Loading quiz for:", technology);
     try {
       // First check mock data for specific technologies
       const mockQuestions = mockMCQ.getQuiz(technology);
+      console.log("Mock questions found:", !!mockQuestions);
       if (mockQuestions) {
         setQuestions(mockQuestions);
         setLoading(false);
@@ -50,6 +52,7 @@ export default function MCQQuizPage() {
       }
 
       const res = await questionsAPI.getQuiz(technology, { count: 10, difficulty });
+      console.log("API response:", res);
       const rawData = res.questions || res.data || (Array.isArray(res) ? res : []);
       
       if (!rawData || rawData.length === 0) {
@@ -60,7 +63,7 @@ export default function MCQQuizPage() {
       setQuestions(rawData);
     } catch (err) {
       console.error('Quiz load error:', err);
-      navigate('/mcq');
+      // navigate('/mcq'); // Commented out to debug
     } finally {
       setLoading(false);
     }

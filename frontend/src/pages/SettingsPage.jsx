@@ -6,7 +6,7 @@ import './SettingsPage.css';
 export default function SettingsPage() {
   const { user, updateUser, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
-  const [profile, setProfile] = useState({ name: user?.name || '', experienceLevel: user?.experienceLevel || 'junior' });
+  const [profile, setProfile] = useState({ name: user?.name || '', experienceLevel: user?.experienceLevel || 'Junior' });
   const [passwords, setPasswords] = useState({ currentPassword:'', newPassword:'', confirmPassword:'' });
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState({ type:'', text:'' });
@@ -107,10 +107,10 @@ export default function SettingsPage() {
                 <label className="form-label">Experience Level</label>
                 <select className="form-select" value={profile.experienceLevel}
                   onChange={e => setProfile(p=>({...p, experienceLevel:e.target.value}))}>
-                  <option value="junior">Junior (0–2 years)</option>
-                  <option value="mid">Mid-level (2–5 years)</option>
-                  <option value="senior">Senior (5+ years)</option>
-                  <option value="expert">Expert / Staff</option>
+                  <option value="Junior">Junior (0–2 years)</option>
+                  <option value="Mid-Level">Mid-Level (2–5 years)</option>
+                  <option value="Senior">Senior (5+ years)</option>
+                  <option value="Expert">Expert / Staff</option>
                 </select>
               </div>
 
