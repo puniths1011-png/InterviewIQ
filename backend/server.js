@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const path = require("path");
+
 require("dotenv").config();
 
 const connectDB = require("./config/database");
@@ -20,21 +21,30 @@ const learningRoutes = require("./routes/learning");
 
 const app = express();
 
-// Connect to MongoDB
+// Connect MongoDB
 connectDB();
 
 // Security middleware
 app.use(helmet());
+
+// CORS Configuration
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://interview-iq-beryl-xi.vercel.app",
+    ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  }),
+  })
 );
 
-// Rate limiting
+// Handle preflight requests
+app.options("*", cors());
+
+// Rate Limiting
 const limiter = rateLimit({
   windowMs: (process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000,
   max: process.env.RATE_LIMIT_MAX || 100,
@@ -43,9 +53,10 @@ const limiter = rateLimit({
     message: "Too many requests, please try again later.",
   },
 });
+
 app.use("/api/", limiter);
 
-// AI route gets stricter limit
+// AI Rate Limiter
 const aiLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 20,
@@ -54,27 +65,33 @@ const aiLimiter = rateLimit({
     message: "Too many AI requests, please slow down.",
   },
 });
+
 app.use("/api/interviews/ai", aiLimiter);
 
-// Body parsing
+// Body Parser
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Logging
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
-// Static files (uploaded resumes)
+// Static Uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Health check
+// Root Route
+app.get("/", (req, res) => {
+  res.send("InterviewIQ Backend Running 🚀");
+});
+
+// Health Route
 app.get("/api/health", (req, res) => {
-  res.json({
+  res.status(200).json({
     success: true,
     message: "InterviewIQ API is running",
-    timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -88,36 +105,42 @@ app.use("/api/users", userRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/learning", learningRoutes);
 
-// 404 handler
+// 404 Handler
 app.use((req, res) => {
-  res
-    .status(404)
-    .json({ success: false, message: `Route ${req.originalUrl} not found` });
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error("Error:", err.stack);
-
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({
+  res.status(404).json({
     success: false,
-    message: err.message || "Internal Server Error",
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    message: `Route ${req.originalUrl} not found`,
   });
 });
 
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(
-    `\n🚀 InterviewIQ Server running in ${process.env.NODE_ENV} mode on port ${PORT}`,
-  );
-  console.log(`📡 API available at http://localhost:${PORT}/api`);
-  console.log(`🔍 Health check: http://localhost:${PORT}/api/health\n`);
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error("Error:", err.stack);
+
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    ...(process.env.NODE_ENV !== "production" && {
+      stack: err.stack,
+    }),
+  });
 });
 
-// Graceful shutdown
+// Start Server
+const PORT = process.env.PORT || 5000;
+
+const server = app.listen(PORT, () => {
+  console.log(
+    `🚀 InterviewIQ Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+  );
+
+  console.log(`📡 API Ready`);
+  console.log(`🔍 Health Check: /api/health`);
+});
+
+// Unhandled Promise Rejection
 process.on("unhandledRejection", (err) => {
   console.error("Unhandled Promise Rejection:", err.message);
+
   server.close(() => process.exit(1));
 });
