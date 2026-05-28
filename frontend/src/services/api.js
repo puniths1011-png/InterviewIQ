@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
   timeout: 30000,
 });
 
@@ -9,12 +9,14 @@ const API = axios.create({
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("iq_token");
+
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 // Handle 401 globally
@@ -24,14 +26,20 @@ API.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem("iq_token");
       localStorage.removeItem("iq_user");
+
       window.location.href = "/login";
     }
-    
+
     const errorData = error.response?.data;
-    const errorMessage = (typeof errorData === "string" ? errorData : (errorData?.message || errorData?.error)) || "Network error";
-    
+
+    const errorMessage =
+      (typeof errorData === "string"
+        ? errorData
+        : errorData?.message || errorData?.error) ||
+      "Network error";
+
     return Promise.reject({ message: errorMessage });
-  },
+  }
 );
 
 // ── Auth ─────────────────────────────────────────────────────
@@ -56,19 +64,23 @@ export const questionsAPI = {
 // ── Interviews ───────────────────────────────────────────────
 export const interviewsAPI = {
   start: (data) => API.post("/interviews/start", data),
-  generateQuestions: (data) => API.post("/interviews/generate-questions", data),
+  generateQuestions: (data) =>
+    API.post("/interviews/generate-questions", data),
   getAll: (params) => API.get("/interviews", { params }),
   getById: (id) => API.get(`/interviews/${id}`),
-  submitAnswer: (id, data) => API.post(`/interviews/${id}/answer`, data),
+  submitAnswer: (id, data) =>
+    API.post(`/interviews/${id}/answer`, data),
   complete: (id) => API.post(`/interviews/${id}/complete`),
   delete: (id) => API.delete(`/interviews/${id}`),
   getResumeInterviewQuestion: (id) =>
     API.post(`/interviews/${id}/answer`, { answer: null }),
 };
 
+// ── Resume ───────────────────────────────────────────────────
 export const resumeAPI = {
   upload: (file) => {
     const formData = new FormData();
+
     formData.append("resume", file);
 
     return API.post("/resume/upload", formData, {
@@ -78,7 +90,9 @@ export const resumeAPI = {
       timeout: 60000,
     });
   },
-  startInterview: (data) => API.post("/resume/start-interview", data),
+
+  startInterview: (data) =>
+    API.post("/resume/start-interview", data),
 };
 
 // ── Feedback ─────────────────────────────────────────────────
