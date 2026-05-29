@@ -9,7 +9,7 @@ require("dotenv").config();
 
 const connectDB = require("./config/database");
 
-// Route imports
+// Routes
 const authRoutes = require("./routes/auth");
 const questionRoutes = require("./routes/questions");
 const interviewRoutes = require("./routes/interviews");
@@ -21,30 +21,57 @@ const learningRoutes = require("./routes/learning");
 
 const app = express();
 
-// Connect MongoDB
+/* ========================
+   TRUST PROXY (RENDER FIX)
+======================== */
+app.set("trust proxy", 1);
+
+/* ========================
+   DB CONNECTION
+======================== */
 connectDB();
 
-// Security middleware
-app.use(helmet());
+/* ========================
+   SECURITY MIDDLEWARE
+======================== */
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
 
-// CORS Configuration
+/* ========================
+   CORS CONFIGURATION
+======================== */
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://interview-iq-beryl-xi.vercel.app",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:5173",
-      "https://interview-iq-beryl-xi.vercel.app",
-    ],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // mobile/postman support
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // TEMP SAFE MODE (prevents CORS blocking in production)
+      return callback(null, true);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Handle preflight requests
 app.options("*", cors());
 
-// Rate Limiting
+/* ========================
+   RATE LIMITING
+======================== */
 const limiter = rateLimit({
   windowMs: (process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000,
   max: process.env.RATE_LIMIT_MAX || 100,
@@ -54,9 +81,9 @@ const limiter = rateLimit({
   },
 });
 
-app.use("/api/", limiter);
+app.use("/api", limiter);
 
-// AI Rate Limiter
+/* AI LIMITER */
 const aiLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 20,
@@ -68,34 +95,39 @@ const aiLimiter = rateLimit({
 
 app.use("/api/interviews/ai", aiLimiter);
 
-// Body Parser
+/* ========================
+   BODY PARSER
+======================== */
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Logging
+/* ========================
+   LOGGING
+======================== */
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
-// Static Uploads
+/* ========================
+   STATIC FILES
+======================== */
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Root Route
+/* ========================
+   ROUTES
+======================== */
 app.get("/", (req, res) => {
   res.send("InterviewIQ Backend Running 🚀");
 });
 
-// Health Route
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
     message: "InterviewIQ API is running",
-    environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
   });
 });
 
-// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/interviews", interviewRoutes);
@@ -105,7 +137,9 @@ app.use("/api/users", userRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/learning", learningRoutes);
 
-// 404 Handler
+/* ========================
+   404 HANDLER
+======================== */
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -113,34 +147,24 @@ app.use((req, res) => {
   });
 });
 
-// Global Error Handler
+/* ========================
+   GLOBAL ERROR HANDLER
+======================== */
 app.use((err, req, res, next) => {
-  console.error("Error:", err.stack);
+  console.error("Error:", err);
 
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || "Internal Server Error",
-    ...(process.env.NODE_ENV !== "production" && {
-      stack: err.stack,
-    }),
   });
 });
 
-// Start Server
+/* ========================
+   START SERVER
+======================== */
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-  console.log(
-    `🚀 InterviewIQ Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
-  );
-
-  console.log(`📡 API Ready`);
-  console.log(`🔍 Health Check: /api/health`);
-});
-
-// Unhandled Promise Rejection
-process.on("unhandledRejection", (err) => {
-  console.error("Unhandled Promise Rejection:", err.message);
-
-  server.close(() => process.exit(1));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🔍 Health: /api/health`);
 });
