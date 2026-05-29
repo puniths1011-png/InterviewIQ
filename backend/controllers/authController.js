@@ -17,7 +17,8 @@ const register = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Email already registered.' });
     }
 
-    const user = await User.create({ name, email, password, experienceLevel: experienceLevel || 'junior' });
+    const normalizedExperienceLevel = experienceLevel ? experienceLevel.toLowerCase() : 'junior';
+    const user = await User.create({ name, email, password, experienceLevel: normalizedExperienceLevel });
 
     const token = generateToken(user._id);
 
@@ -95,10 +96,15 @@ const getMe = async (req, res, next) => {
 const updateProfile = async (req, res, next) => {
   try {
     const { name, experienceLevel, preferredTech, notifications } = req.body;
+    const updateData = { name, preferredTech, notifications };
+    
+    if (experienceLevel) {
+        updateData.experienceLevel = experienceLevel.toLowerCase();
+    }
 
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { name, experienceLevel, preferredTech, notifications },
+      updateData,
       { new: true, runValidators: true }
     ).select('-password');
 

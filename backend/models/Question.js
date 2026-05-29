@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
+  customId: { type: String, index: true },
   technology: {
     type: String,
     required: true,

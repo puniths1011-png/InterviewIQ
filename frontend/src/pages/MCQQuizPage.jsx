@@ -45,22 +45,33 @@ export default function MCQQuizPage() {
       // First check mock data for specific technologies
       const mockQuestions = mockMCQ.getQuiz(technology);
       console.log("Mock questions found:", !!mockQuestions);
+      let rawData = [];
       if (mockQuestions) {
-        setQuestions(mockQuestions);
-        setLoading(false);
-        return;
+        rawData = mockQuestions;
+      } else {
+        const res = await questionsAPI.getQuiz(technology, { count: 10, difficulty });
+        console.log("API response:", res);
+        rawData = res.questions || res.data || (Array.isArray(res) ? res : []);
       }
-
-      const res = await questionsAPI.getQuiz(technology, { count: 10, difficulty });
-      console.log("API response:", res);
-      const rawData = res.questions || res.data || (Array.isArray(res) ? res : []);
       
       if (!rawData || rawData.length === 0) {
         alert('No questions found. Returning to selector.');
         navigate('/mcq');
         return;
       }
-      setQuestions(rawData);
+
+      // Shuffle options for each question
+      const shuffledQuestions = rawData.map(q => {
+          const options = q.options.map((opt, i) => ({ ...opt, originalIndex: i }));
+          for (let i = options.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [options[i], options[j]] = [options[j], options[i]];
+          }
+          const newCorrectIndex = options.findIndex(opt => opt.originalIndex === q.correctOptionIndex);
+          return { ...q, options, correctOptionIndex: newCorrectIndex };
+      });
+
+      setQuestions(shuffledQuestions);
     } catch (err) {
       console.error('Quiz load error:', err);
       // navigate('/mcq'); // Commented out to debug
@@ -77,7 +88,7 @@ export default function MCQQuizPage() {
       const q = questions[currentIdx];
       
       // If it's a mock question, evaluate locally
-      if (q._id.startsWith('ml_') || q._id.startsWith('sql_')) {
+      if (q._id.startsWith('ml_') || q._id.startsWith('sql_') || q._id.startsWith('react_') || q._id.startsWith('node_') || q._id.startsWith('mongo_') || q._id.startsWith('ts_') || q._id.startsWith('js_') || q._id.startsWith('css_') || q._id.startsWith('next_') || q._id.startsWith('py_') || q._id.startsWith('java_') || q._id.startsWith('docker_') || q._id.startsWith('k8s_') || q._id.startsWith('gql_') || q._id.startsWith('rest_') || q._id.startsWith('pg_')) {
         const isCorrect = optIdx === q.correctOptionIndex;
         const answerData = {
           selected: optIdx,
@@ -117,12 +128,15 @@ export default function MCQQuizPage() {
       setCurrentIdx(i => i + 1);
       setTimeLeft(90);
     } else {
+      // Calculate score from answered answers to avoid stale state
+      const finalScore = Object.values(answered).reduce((acc, a) => acc + (a.correct ? (a.points || 10) : 0), 0);
+      
       // Store results in session storage to pass to results page
       sessionStorage.setItem('last_quiz_result', JSON.stringify({
         tech: tech || { name: technology, emoji: '🧩' },
         questions,
         answered,
-        totalScore
+        totalScore: finalScore
       }));
       navigate('/mcq/results');
     }

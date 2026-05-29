@@ -97,7 +97,17 @@ const getQuestion = async (req, res, next) => {
 const submitAnswer = async (req, res, next) => {
   try {
     const { selectedOptionIndex, timeSpent } = req.body;
-    const question = await Question.findById(req.params.id);
+    let question;
+
+    try {
+        question = await Question.findById(req.params.id);
+    } catch (e) {
+        // Ignore CastError to allow customId lookup
+    }
+
+    if (!question) {
+        question = await Question.findOne({ customId: req.params.id });
+    }
 
     if (!question) {
       return res.status(404).json({ success: false, message: 'Question not found.' });

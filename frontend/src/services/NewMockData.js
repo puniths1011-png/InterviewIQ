@@ -1,6 +1,3 @@
-// MockService.js - Handles client-side data for MCQ and User Tracking
-
-// --- REACT QUESTIONS ---
 const REACT_QUESTIONS = [
   { _id: "react_1", question: "What hook is used to perform side effects in functional components?", options: [{text: "useState"}, {text: "useEffect"}, {text: "useContext"}, {text: "useReducer"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "useEffect is used for side effects." },
   { _id: "react_2", question: "What is the correct way to update state based on previous state?", options: [{text: "setCount(count + 1)"}, {text: "setCount(prev => prev + 1)"}, {text: "this.setState({count: count + 1})"}, {text: "state.count++"}], correctOptionIndex: 1, difficulty: "Intermediate", explanation: "Using the functional update form ensures you are working with the latest state." },
@@ -14,7 +11,6 @@ const REACT_QUESTIONS = [
   { _id: "react_10", question: "What is the Virtual DOM?", options: [{text: "A browser-native DOM representation"}, {text: "A lightweight copy of the real DOM"}, {text: "A server-side only DOM"}, {text: "A CSS-only DOM"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "The Virtual DOM is a lightweight copy of the real DOM used for performance optimizations." }
 ];
 
-// --- NODE.JS QUESTIONS ---
 const NODE_QUESTIONS = [
   { _id: "node_1", question: "What does Node.js use for its event-driven architecture?", options: [{text: "EventEmitter"}, {text: "EventLoop"}, {text: "EventDispatcher"}, {text: "EventListener"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "The EventEmitter class is core to Node's event-driven architecture." },
   { _id: "node_2", question: "Which command starts a Node.js REPL?", options: [{text: "node start"}, {text: "node"}, {text: "node run"}, {text: "node repl"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "Running 'node' without arguments starts the REPL." },
@@ -28,7 +24,6 @@ const NODE_QUESTIONS = [
   { _id: "node_10", question: "Which Node.js module is used for web servers?", options: [{text: "http"}, {text: "web"}, {text: "server"}, {text: "request"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "The 'http' module allows Node.js to transfer data over HTTP." }
 ];
 
-// --- MONGODB QUESTIONS ---
 const MONGODB_QUESTIONS = [
   { _id: "mongo_1", question: "What is a document in MongoDB?", options: [{text: "A table row"}, {text: "A JSON-like object"}, {text: "A collection"}, {text: "A database file"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "MongoDB stores data in BSON documents." },
   { _id: "mongo_2", question: "Which command shows all collections?", options: [{text: "show db"}, {text: "show collections"}, {text: "list collections"}, {text: "db.list()"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "'show collections' lists the collections." },
@@ -42,7 +37,6 @@ const MONGODB_QUESTIONS = [
   { _id: "mongo_10", question: "What is BSON?", options: [{text: "Binary JSON"}, {text: "Basic JSON"}, {text: "Best JSON"}, {text: "Binary Serialization Object Notation"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "BSON is the binary-encoded serialization of JSON documents." }
 ];
 
-// --- TYPESCRIPT QUESTIONS ---
 const TYPESCRIPT_QUESTIONS = [
   { _id: "ts_1", question: "What is the file extension for TypeScript files?", options: [{text: ".ts"}, {text: ".js"}, {text: ".tst"}, {text: ".typescript"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: ".ts is the extension." },
   { _id: "ts_2", question: "What is an interface?", options: [{text: "A runtime class"}, {text: "A structure to define type contracts"}, {text: "A way to import modules"}, {text: "A type of variable"}], correctOptionIndex: 1, difficulty: "Intermediate", explanation: "Interfaces define structure." },
@@ -56,7 +50,6 @@ const TYPESCRIPT_QUESTIONS = [
   { _id: "ts_10", question: "What is a mapped type?", options: [{text: "A type based on another type's keys"}, {text: "A type alias"}, {text: "A generic interface"}, {text: "A union type"}], correctOptionIndex: 0, difficulty: "Advanced", explanation: "Mapped types allow creating new types from existing types by mapping their keys." }
 ];
 
-// --- JS QUESTIONS ---
 const JS_QUESTIONS = [
   { _id: "js_1", question: "Which keyword defines a block-scoped variable?", options: [{text: "var"}, {text: "let"}, {text: "const"}, {text: "define"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "let is block-scoped." },
   { _id: "js_2", question: "What is a closure?", options: [{text: "A function that returns a function"}, {text: "A function that has access to its lexical scope"}, {text: "A private variable"}, {text: "A global function"}], correctOptionIndex: 1, difficulty: "Intermediate", explanation: "Closures preserve the lexical scope." },
@@ -70,7 +63,6 @@ const JS_QUESTIONS = [
   { _id: "js_10", question: "What is a generator function?", options: [{text: "A function that can pause execution"}, {text: "A function that generates objects"}, {text: "A function that generates CSS"}, {text: "A class"}], correctOptionIndex: 0, difficulty: "Advanced", explanation: "Generators use 'function*' and 'yield' to pause." }
 ];
 
-// --- CSS QUESTIONS ---
 const CSS_QUESTIONS = [
   { _id: "css_1", question: "What does CSS stand for?", options: [{text: "Colorful Style Sheets"}, {text: "Cascading Style Sheets"}, {text: "Computer Style Sheets"}, {text: "Creative Style Sheets"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "Cascading Style Sheets." },
   { _id: "css_2", question: "Which property is for changing font size?", options: [{text: "text-size"}, {text: "font-size"}, {text: "size"}, {text: "font-style"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "font-size." },
@@ -84,7 +76,6 @@ const CSS_QUESTIONS = [
   { _id: "css_10", question: "What is the Box Model?", options: [{text: "Margin, Border, Padding, Content"}, {text: "Content, Padding, Border, Margin"}, {text: "Border, Margin, Content, Padding"}, {text: "None of the above"}], correctOptionIndex: 1, difficulty: "Intermediate", explanation: "Content + Padding + Border + Margin = Box Model." }
 ];
 
-// --- NEXT.JS QUESTIONS ---
 const NEXTJS_QUESTIONS = [
   { _id: "next_1", question: "What is a key benefit of Next.js?", options: [{text: "SSR/SSG support"}, {text: "Easy CSS"}, {text: "No JavaScript"}, {text: "Only client-side"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "SSR and SSG are core Next.js features." },
   { _id: "next_2", question: "What is the App Router?", options: [{text: "The routing system in newer Next.js versions"}, {text: "A database"}, {text: "A CSS file"}, {text: "A plugin"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "The App Router uses React Server Components." },
@@ -98,7 +89,6 @@ const NEXTJS_QUESTIONS = [
   { _id: "next_10", question: "What is middleware?", options: [{text: "Code that runs before a request completes"}, {text: "A React component"}, {text: "An API route"}, {text: "A database query"}], correctOptionIndex: 0, difficulty: "Advanced", explanation: "Middleware intercepts requests." }
 ];
 
-// --- PYTHON QUESTIONS ---
 const PYTHON_QUESTIONS = [
   { _id: "py_1", question: "How to define a function?", options: [{text: "def func():"}, {text: "function func():"}, {text: "func() = {}"}, {text: "let func = {}"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "def is used." },
   { _id: "py_2", question: "Which is a list?", options: [{text: "{1,2}"}, {text: "[1,2]"}, {text: "(1,2)"}, {text: "1:2"}], correctOptionIndex: 1, difficulty: "Beginner", explanation: "[] defines a list." },
@@ -112,7 +102,6 @@ const PYTHON_QUESTIONS = [
   { _id: "py_10", question: "What is PEP 8?", options: [{text: "Style guide"}, {text: "Language spec"}, {text: "Compiler"}, {text: "Library"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Style guide for Python code." }
 ];
 
-// --- JAVA QUESTIONS ---
 const JAVA_QUESTIONS = [
   { _id: "java_1", question: "What is a class?", options: [{text: "A blueprint for objects"}, {text: "A variable"}, {text: "A method"}, {text: "A library"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Classes define objects." },
   { _id: "java_2", question: "Which keyword creates an object?", options: [{text: "new"}, {text: "create"}, {text: "instance"}, {text: "make"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "new creates instances." },
@@ -126,7 +115,6 @@ const JAVA_QUESTIONS = [
   { _id: "java_10", question: "What is a constructor?", options: [{text: "Method for initialization"}, {text: "Method for destruction"}, {text: "Variable"}, {text: "Class"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Initializes objects." }
 ];
 
-// --- DOCKER QUESTIONS ---
 const DOCKER_QUESTIONS = [
   { _id: "docker_1", question: "What is a Docker image?", options: [{text: "Blueprint for containers"}, {text: "A running container"}, {text: "A network"}, {text: "A volume"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Images are read-only templates." },
   { _id: "docker_2", question: "What is a Docker container?", options: [{text: "A running instance of an image"}, {text: "An image"}, {text: "A registry"}, {text: "A network"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Containers run applications." },
@@ -140,7 +128,6 @@ const DOCKER_QUESTIONS = [
   { _id: "docker_10", question: "What is the purpose of EXPOSE?", options: [{text: "Documenting ports"}, {text: "Opening ports"}, {text: "Volume mapping"}, {text: "Setting environment"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "Informs which port to listen." }
 ];
 
-// --- K8S QUESTIONS ---
 const K8S_QUESTIONS = [
   { _id: "k8s_1", question: "What is a pod?", options: [{text: "Smallest unit in K8s"}, {text: "Cluster node"}, {text: "Database"}, {text: "Container"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Atomic unit." },
   { _id: "k8s_2", question: "What is a deployment?", options: [{text: "Defines pod lifecycle"}, {text: "A node"}, {text: "A service"}, {text: "A volume"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "Manages pods." },
@@ -154,7 +141,6 @@ const K8S_QUESTIONS = [
   { _id: "k8s_10", question: "What is namespace?", options: [{text: "Logical isolation"}, {text: "A node"}, {text: "A pod"}, {text: "A service"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "Isolates resources." }
 ];
 
-// --- GRAPHQL QUESTIONS ---
 const GRAPHQL_QUESTIONS = [
   { _id: "gql_1", question: "What is GraphQL?", options: [{text: "Query language"}, {text: "Database"}, {text: "Library"}, {text: "Framework"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Query language." },
   { _id: "gql_2", question: "What is a resolver?", options: [{text: "Function to fetch data"}, {text: "Schema"}, {text: "Type"}, {text: "Query"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "Resolvers provide data." },
@@ -168,7 +154,6 @@ const GRAPHQL_QUESTIONS = [
   { _id: "gql_10", question: "What is an enum type?", options: [{text: "Set of allowed values"}, {text: "Variable"}, {text: "Class"}, {text: "Method"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "Enumerated values." }
 ];
 
-// --- REST API QUESTIONS ---
 const REST_QUESTIONS = [
   { _id: "rest_1", question: "What is REST?", options: [{text: "Architectural style"}, {text: "Database"}, {text: "Language"}, {text: "Framework"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "REST is architectural." },
   { _id: "rest_2", question: "Which method is for reading?", options: [{text: "GET"}, {text: "POST"}, {text: "PUT"}, {text: "DELETE"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "GET fetches." },
@@ -182,7 +167,6 @@ const REST_QUESTIONS = [
   { _id: "rest_10", question: "What is an endpoint?", options: [{text: "URL for a resource"}, {text: "Database"}, {text: "CSS"}, {text: "Method"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Access point." }
 ];
 
-// --- POSTGRESQL QUESTIONS ---
 const POSTGRES_QUESTIONS = [
   { _id: "pg_1", question: "What is PostgreSQL?", options: [{text: "Relational DB"}, {text: "NoSQL DB"}, {text: "Cache"}, {text: "Framework"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Relational DB." },
   { _id: "pg_2", question: "What is SQL?", options: [{text: "Query language"}, {text: "Database"}, {text: "Library"}, {text: "Framework"}], correctOptionIndex: 0, difficulty: "Beginner", explanation: "Query language." },
@@ -194,460 +178,4 @@ const POSTGRES_QUESTIONS = [
   { _id: "pg_8", question: "What is a transaction?", options: [{text: "Atomic operation"}, {text: "Query"}, {text: "Index"}, {text: "Table"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "ACID property." },
   { _id: "pg_9", question: "What is an index?", options: [{text: "Performance tool"}, {text: "Constraint"}, {text: "Join"}, {text: "Table"}], correctOptionIndex: 0, difficulty: "Intermediate", explanation: "Speeds up queries." },
   { _id: "pg_10", question: "What is a trigger?", options: [{text: "Automated event"}, {text: "Constraint"}, {text: "Join"}, {text: "Index"}], correctOptionIndex: 0, difficulty: "Advanced", explanation: "Runs on events." }
-];
-
-// --- ML & SQL QUESTIONS (Existing) ---
-const ML_QUESTIONS = [
-  {
-    _id: "ml_1",
-    question: "What is the primary goal of Supervised Learning?",
-    options: [
-      { text: "Finding hidden patterns in unlabeled data" },
-      { text: "Mapping input data to known output labels" },
-      { text: "Learning through trial and error with rewards" },
-      { text: "Reducing the dimensionality of a dataset" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Beginner",
-    explanation: "Supervised learning uses labeled data to train models that can predict output for new, unseen inputs."
-  },
-  {
-    _id: "ml_2",
-    question: "In Linear Regression, what does the R-squared value represent?",
-    options: [
-      { text: "The slope of the regression line" },
-      { text: "The proportion of variance in the dependent variable explained by independent variables" },
-      { text: "The average error of the predictions" },
-      { text: "The number of outliers in the dataset" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Intermediate",
-    explanation: "R-squared measures how well the regression model fits the observed data."
-  },
-  {
-    _id: "ml_3",
-    question: "Which algorithm is commonly used for Dimensionality Reduction?",
-    options: [
-      { text: "Random Forest" },
-      { text: "Principal Component Analysis (PCA)" },
-      { text: "Support Vector Machines (SVM)" },
-      { text: "K-Nearest Neighbors (KNN)" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Intermediate",
-    explanation: "PCA is a popular technique for reducing the number of variables in a dataset while preserving its variance."
-  },
-  {
-    _id: "ml_4",
-    question: "What is 'Overfitting' in Machine Learning?",
-    options: [
-      { text: "When a model is too simple to capture underlying patterns" },
-      { text: "When a model performs well on training data but poorly on unseen data" },
-      { text: "When a model takes too long to train" },
-      { text: "When a model is trained on insufficient data" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Beginner",
-    explanation: "Overfitting occurs when a model learns the noise in the training data rather than the intended patterns."
-  },
-  {
-    _id: "ml_5",
-    question: "Which activation function is often used in the output layer of a multi-class classification neural network?",
-    options: [
-      { text: "Sigmoid" },
-      { text: "ReLU" },
-      { text: "Softmax" },
-      { text: "Tanh" }
-    ],
-    correctOptionIndex: 2,
-    difficulty: "Intermediate",
-    explanation: "Softmax converts a vector of numbers into a vector of probabilities that sum to 1.0, ideal for multi-class classification."
-  },
-  {
-    _id: "ml_6",
-    question: "What is the function of a 'Validation Set'?",
-    options: [
-      { text: "To train the model's weights" },
-      { text: "To tune hyperparameters and prevent overfitting during development" },
-      { text: "To provide the final performance metric of the model" },
-      { text: "To clean the training data" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Intermediate",
-    explanation: "The validation set is used to compare different model configurations and choose the best one before final testing."
-  },
-  {
-    _id: "ml_7",
-    question: "In Random Forest, what is the 'Out-of-Bag' (OOB) error?",
-    options: [
-      { text: "Error on the training data" },
-      { text: "Error calculated on samples not used for training a particular tree" },
-      { text: "Error due to incorrect labels" },
-      { text: "Error during the feature selection process" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Advanced",
-    explanation: "OOB error is a method of measuring the prediction error of random forests, using bootstrap aggregating (bagging)."
-  },
-  {
-    _id: "ml_8",
-    question: "What is the main difference between L1 and L2 regularization?",
-    options: [
-      { text: "L1 uses the square of weights, L2 uses the absolute value" },
-      { text: "L1 can lead to sparse feature selection (weights become zero), L2 generally keeps weights small" },
-      { text: "L2 is only used for classification" },
-      { text: "There is no functional difference" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Advanced",
-    explanation: "L1 regularization (Lasso) adds an absolute value penalty, while L2 (Ridge) adds a squared penalty."
-  },
-  {
-    _id: "ml_9",
-    question: "Which technique is used to handle 'Imbalanced Datasets'?",
-    options: [
-      { text: "Cross-validation" },
-      { text: "SMOTE (Synthetic Minority Over-sampling Technique)" },
-      { text: "Feature Scaling" },
-      { text: "Grid Search" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Advanced",
-    explanation: "SMOTE creates synthetic examples of the minority class to balance the dataset."
-  },
-  {
-    _id: "ml_10",
-    question: "What is 'Precision' in a confusion matrix?",
-    options: [
-      { text: "TP / (TP + FN)" },
-      { text: "TP / (TP + FP)" },
-      { text: "TN / (TN + FP)" },
-      { text: "(TP + TN) / Total" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Intermediate",
-    explanation: "Precision is the ratio of correctly predicted positive observations to the total predicted positives."
-  }
-];
-
-const SQL_QUESTIONS = [
-  {
-    _id: "sql_1",
-    question: "Which SQL command is used to retrieve data from a database?",
-    options: [
-      { text: "GET" },
-      { text: "SELECT" },
-      { text: "EXTRACT" },
-      { text: "FETCH" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Beginner",
-    explanation: "SELECT is the fundamental command used to query data from database tables."
-  },
-  {
-    _id: "sql_2",
-    question: "What is the purpose of the 'GROUP BY' clause?",
-    options: [
-      { text: "To sort the result set" },
-      { text: "To filter records" },
-      { text: "To arrange identical data into groups, often used with aggregate functions" },
-      { text: "To join two tables" }
-    ],
-    correctOptionIndex: 2,
-    difficulty: "Intermediate",
-    explanation: "GROUP BY is used with functions like COUNT, MAX, MIN, SUM, AVG to group the result-set by one or more columns."
-  },
-  {
-    _id: "sql_3",
-    question: "What is a 'Primary Key'?",
-    options: [
-      { text: "A key that can be null" },
-      { text: "A column that uniquely identifies each record in a table" },
-      { text: "A key used to link two tables" },
-      { text: "A secondary index" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Beginner",
-    explanation: "A Primary Key must contain unique values and cannot contain NULL values."
-  },
-  {
-    _id: "sql_4",
-    question: "Which type of JOIN returns all records when there is a match in either left or right table?",
-    options: [
-      { text: "INNER JOIN" },
-      { text: "LEFT JOIN" },
-      { text: "FULL OUTER JOIN" },
-      { text: "RIGHT JOIN" }
-    ],
-    correctOptionIndex: 2,
-    difficulty: "Intermediate",
-    explanation: "FULL OUTER JOIN combines the results of both LEFT and RIGHT outer joins."
-  },
-  {
-    _id: "sql_5",
-    question: "What does the 'HAVING' clause do?",
-    options: [
-      { text: "Filters records before they are grouped" },
-      { text: "Filters records after they have been grouped" },
-      { text: "Sorts the grouped data" },
-      { text: "Creates a new table" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Intermediate",
-    explanation: "The HAVING clause was added to SQL because the WHERE keyword could not be used with aggregate functions."
-  },
-  {
-    _id: "sql_6",
-    question: "Which constraint is used to ensure that all values in a column are different?",
-    options: [
-      { text: "CHECK" },
-      { text: "UNIQUE" },
-      { text: "NOT NULL" },
-      { text: "DEFAULT" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Beginner",
-    explanation: "The UNIQUE constraint ensures that all values in a column are distinct."
-  },
-  {
-    _id: "sql_7",
-    question: "What is a 'Common Table Expression' (CTE) in SQL?",
-    options: [
-      { text: "A permanent view stored in the database" },
-      { text: "A temporary result set that you can reference within another SELECT, INSERT, UPDATE, or DELETE statement" },
-      { text: "A type of database trigger" },
-      { text: "An aggregate function" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Advanced",
-    explanation: "CTEs (defined using the WITH keyword) make complex queries more readable and maintainable."
-  },
-  {
-    _id: "sql_8",
-    question: "What is the difference between TRUNCATE and DELETE?",
-    options: [
-      { text: "TRUNCATE can be rolled back, DELETE cannot" },
-      { text: "DELETE is a DDL command, TRUNCATE is DML" },
-      { text: "TRUNCATE is faster as it doesn't log individual row deletions; DELETE logs each row" },
-      { text: "There is no difference" }
-    ],
-    correctOptionIndex: 2,
-    difficulty: "Advanced",
-    explanation: "TRUNCATE removes all rows from a table and is generally faster than DELETE."
-  },
-  {
-    _id: "sql_9",
-    question: "What is 'Normalization' in databases?",
-    options: [
-      { text: "Adding redundant data to improve performance" },
-      { text: "The process of organizing data to minimize redundancy and dependency" },
-      { text: "Securing the database against unauthorized access" },
-      { text: "Backing up the database" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Intermediate",
-    explanation: "Normalization involves dividing a database into two or more tables and defining relationships between them."
-  },
-  {
-    _id: "sql_10",
-    question: "What does a 'Window Function' do?",
-    options: [
-      { text: "Opens a new connection to the database" },
-      { text: "Performs a calculation across a set of table rows that are somehow related to the current row" },
-      { text: "Displays the data in a GUI window" },
-      { text: "Limits the number of rows returned" }
-    ],
-    correctOptionIndex: 1,
-    difficulty: "Advanced",
-    explanation: "Window functions (like RANK, ROW_NUMBER, OVER) allow calculations over a range of rows without collapsing them into a single output row."
-  }
-];
-
-export const mockMCQ = {
-  getQuiz: (tech) => {
-    const techLower = tech.toLowerCase();
-    
-    // Improved matching for Machine Learning / AI
-    if (techLower.includes('ml') || techLower.includes('machine') || techLower.includes('ai')) {
-      return ML_QUESTIONS;
-    }
-    
-    // Improved matching for SQL
-    if (techLower.includes('sql')) {
-      return SQL_QUESTIONS;
-    }
-    
-    // Additional mappings
-    if (techLower.includes('react')) return REACT_QUESTIONS;
-    if (techLower.includes('node')) return NODE_QUESTIONS;
-    if (techLower.includes('mongo')) return MONGODB_QUESTIONS;
-    if (techLower.includes('type')) return TYPESCRIPT_QUESTIONS;
-    if (techLower.includes('java')) {
-      if (techLower.includes('script')) return JS_QUESTIONS;
-      return JAVA_QUESTIONS;
-    }
-    if (techLower.includes('css')) return CSS_QUESTIONS;
-    if (techLower.includes('next')) return NEXTJS_QUESTIONS;
-    if (techLower.includes('python')) return PYTHON_QUESTIONS;
-    if (techLower.includes('docker')) return DOCKER_QUESTIONS;
-    if (techLower.includes('kube')) return K8S_QUESTIONS;
-    if (techLower.includes('graph')) return GRAPHQL_QUESTIONS;
-    if (techLower.includes('rest')) return REST_QUESTIONS;
-    if (techLower.includes('postgres')) return POSTGRES_QUESTIONS;
-    
-    return null;
-  }
-};
-
-// ── Journey Tracking ──
-export const journeyTracker = {
-  trackEvent: (eventName, metadata = {}) => {
-    try {
-      const journey = JSON.parse(localStorage.getItem('user_journey') || '[]');
-      const newEvent = {
-        event: eventName,
-        path: window.location.pathname,
-        timestamp: new Date().toISOString(),
-        metadata,
-        userId: JSON.parse(localStorage.getItem('iq_user') || '{}')._id || 'anonymous'
-      };
-      
-      journey.push(newEvent);
-      // Keep only last 100 events to manage storage
-      if (journey.length > 100) journey.shift();
-      
-      localStorage.setItem('user_journey', JSON.stringify(journey));
-      
-      // In a real world app, you would send this to an analytics endpoint:
-      // console.log('[Journey Tracked]', newEvent);
-    } catch (e) {
-      console.error('Tracking error:', e);
-    }
-  },
-  
-  getJourney: () => {
-    return JSON.parse(localStorage.getItem('user_journey') || '[]');
-  }
-};
-
-// ── Learning Paths ──
-export const mockLearningPaths = [
-  {
-    id: 1,
-    title: "React Fundamentals",
-    level: "Beginner",
-    emoji: "⚛️",
-    desc: "React.js, JSX, Hooks, Router, Context API, State Management",
-    category: "Frontend",
-    color: "rgba(99, 102, 241, 0.1)",
-    modules: 6,
-    topics: [
-      { name: "Introduction to React & JSX", content: ["JSX Syntax", "Functional Components", "Rendering Elements"] },
-      { name: "Components & Props", content: ["Props usage", "Composition", "Pure Components"] },
-      { name: "React Hooks (useState, useEffect)", content: ["State hook", "Effect hook", "Rules of hooks"] },
-      { name: "Event Handling & Forms", content: ["Synthetic Events", "Controlled Components", "Form Submission"] },
-      { name: "Context API & State Management", content: ["Context Provider", "Consumer", "useContext"] },
-      { name: "Routing with React Router", content: ["Route matching", "Navigation", "Parameters"] }
-    ]
-  },
-  {
-    id: 2,
-    title: "Node.js & Express",
-    level: "Intermediate",
-    emoji: "🟢",
-    desc: "Node.js, Express.js, REST APIs, Middleware, Auth, File System",
-    category: "Backend",
-    color: "rgba(16, 185, 129, 0.1)",
-    modules: 5,
-    topics: [
-      { name: "Node.js Basics & Runtime", content: ["V8 Engine", "Event Loop", "Modules"] },
-      { name: "Express Server Setup", content: ["App instances", "Middleware application", "Environment config"] },
-      { name: "REST API Development", content: ["CRUD methods", "Resource modeling", "Status codes"] },
-      { name: "Middleware & Authentication", content: ["JWT", "Passport.js", "Custom middleware"] },
-      { name: "File Handling & Streams", content: ["fs module", "Pipe", "Buffers"] }
-    ]
-  },
-  {
-    id: 3,
-    title: "MongoDB & Mongoose",
-    level: "Intermediate",
-    emoji: "🍃",
-    desc: "MongoDB, Mongoose ODM, CRUD, Aggregation, Indexing, Schema Design",
-    category: "Database",
-    color: "rgba(245, 158, 11, 0.1)",
-    modules: 4,
-    topics: [
-      { name: "MongoDB Fundamentals", content: ["NoSQL principles", "Collections", "BSON"] },
-      { name: "CRUD with Mongoose", content: ["Model methods", "Validation", "Queries"] },
-      { name: "Schema Design & Relationships", content: ["Embedding", "Referencing", "Virtuals"] },
-      { name: "Aggregation & Indexing", content: ["Pipeline", "Stages", "Performance"] }
-    ]
-  },
-  {
-    id: 4,
-    title: "TypeScript Deep Dive",
-    level: "Intermediate",
-    emoji: "📘",
-    desc: "TypeScript, Interfaces, Generics, Decorators, Utility Types",
-    category: "Language",
-    color: "rgba(59, 130, 246, 0.1)",
-    modules: 5,
-    topics: [
-      { name: "TypeScript Basics", content: ["Static Typing", "Compiling", "tsconfig"] },
-      { name: "Types & Interfaces", content: ["Unions", "Intersections", "Extending"] },
-      { name: "Generics & Advanced Types", content: ["Generic constraints", "Utility types", "Mapped types"] },
-      { name: "Decorators & Metadata", content: ["Class decorators", "Property decorators", "Reflect-metadata"] },
-      { name: "Utility Types & Best Practices", content: ["Partial", "Readonly", "Pick", "Omit"] }
-    ]
-  },
-  {
-    id: 5,
-    title: "Next.js Full Stack",
-    level: "Advanced",
-    emoji: "🔥",
-    desc: "Next.js, SSR, SSG, ISR, API Routes, App Router, Deployment",
-    category: "Frontend",
-    color: "rgba(239, 68, 68, 0.1)",
-    modules: 6,
-    topics: [
-      { name: "Next.js Fundamentals", content: ["Pre-rendering", "Optimization", "Image component"] },
-      { name: "Routing & Layouts", content: ["App router", "Parallel routes", "Intercepting routes"] },
-      { name: "SSR, SSG & ISR", content: ["getServerSideProps", "getStaticProps", "Incremental Static Regeneration"] },
-      { name: "API Routes & Backend Logic", content: ["Edge runtime", "Serverless functions", "Database connection"] },
-      { name: "App Router & Server Components", content: ["Client vs Server components", "Suspense", "Streaming"] },
-      { name: "Deployment & Optimization", content: ["Vercel", "Performance metrics", "Caching"] }
-    ]
-  },
-  {
-    id: 6,
-    title: "Docker & DevOps",
-    level: "Advanced",
-    emoji: "🐳",
-    desc: "Docker, Docker Compose, Kubernetes (K8s), CI/CD, Monitoring",
-    category: "DevOps",
-    color: "rgba(14, 165, 233, 0.1)",
-    modules: 4,
-    topics: [
-      { name: "Docker Basics & Containers", content: ["Images", "Layers", "Registry"] },
-      { name: "Docker Compose & Networking", content: ["Multi-container setup", "Volumes", "Networks"] },
-      { name: "Kubernetes Fundamentals", content: ["Pods", "Services", "Deployments"] },
-      { name: "CI/CD & Monitoring", content: ["GitHub Actions", "Prometheus", "Grafana"] }
-    ]
-  },
-  {
-    id: 7,
-    title: "Testing Strategies",
-    level: "Intermediate",
-    emoji: "🧪",
-    desc: "Jest, Cypress, Unit, Integration, E2E Testing",
-    category: "Testing",
-    color: "rgba(16, 185, 129, 0.1)",
-    modules: 4,
-    topics: [
-      { name: "Unit Testing Fundamentals", content: ["Test runner", "Assertions", "Coverage"] },
-      { name: "Integration Testing", content: ["Component testing", "Event simulation", "Snapshots"] },
-      { name: "Mocking APIs & Services", content: ["jest.mock", "msw", "Spying"] },
-      { name: "End-to-End Testing with Cypress", content: ["Cypress commands", "Fixtures", "Recording"] }
-    ]
-  }
 ];
